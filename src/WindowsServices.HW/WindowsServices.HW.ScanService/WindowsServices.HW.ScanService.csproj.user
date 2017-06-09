@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartArguments>console -props:inputFolders=C:\winserv\inputs\1%3bC:\winserv\inputs\2|scanInterval=5000|outputsLocation=C:\winserv\outputs\|logPath=C:\winserv\scanner.log</StartArguments>
+    <StartArguments>console -props:inputFolders=C:\winserv\inputs\1%3bC:\winserv\inputs\2|scanInterval=5000|outputsLocation=C:\winserv\outputs\|logPath=C:\winserv\scanner.log|CodeRewritingLogs=true</StartArguments>
   </PropertyGroup>
   <PropertyGroup>
     <ProjectView>ShowAllFiles</ProjectView>

@@ -11,6 +11,7 @@ namespace WindowsServices.HW.Utils.Props
         public const string ProcessLocation = "processLocation";
         public const string OutputsLocation = "outputsLocation";
         public const string LogPath = "logPath";
+        public const string CodeRewritingLogs = "CodeRewritingLogs";
         public const string Endpoint = "Endpoint";
         public const string StsEndpoint = "StsEndpoint";
         public const string RuntimePort = "RuntimePort";

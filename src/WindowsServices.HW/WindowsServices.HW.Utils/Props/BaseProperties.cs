@@ -1,11 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace WindowsServices.HW.Utils.Props
 {
+    [DataContract]
     public class BaseProperties
     {
+        public BaseProperties()
+        {
+            
+        }
+
         public BaseProperties(string propsArgs)
         {
             //-props:inputFolders=C:\winserv\inputs\1;C:\winserv\inputs\2|scanInterval=5000|outputsLocation=C:\winserv\outputs\|logPath=C:\winserv\scanner.log
@@ -25,7 +32,10 @@ namespace WindowsServices.HW.Utils.Props
             PropsArgs = GetArgumentsLine(properties);
         }
 
+        [DataMember]
+
         public IDictionary<string, string> Properties { get; private set; } = new Dictionary<string, string>();
+        [DataMember]
         public string PropsArgs { get; private set; }
 
         public void Update(IDictionary<string, string> newValues)

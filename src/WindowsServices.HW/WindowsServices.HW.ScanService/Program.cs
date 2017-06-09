@@ -14,7 +14,10 @@ namespace WindowsServices.HW.ScanService
             var logFactory = GetLogFactory(args, @"C:\winserv\scanner.log");
 
             var logger = HW.Logging.Logger.Current;
-            logger.SetActualLogger(logFactory.GetLogger("HW.ScanService"));
+            var props = BaseProperties.GetProperties(args);
+            var logProps = new LogBaseProperties(props);
+
+            logger.SetActualLogger(logFactory.GetLogger("HW.ScanService"), logProps.UseCodeRewritingLogs);
 
             logger.LogInfo("Main");
             foreach (var arg in args)
@@ -22,8 +25,6 @@ namespace WindowsServices.HW.ScanService
                 logger.LogInfo(arg);
             }
 
-
-            var props = BaseProperties.GetProperties(args);
             if (args.Length > 0 && args[0].Equals("console"))
             {
                 var serv = new ScannerService(props);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ServiceProcess;
 using WindowsServices.HW.ImgScanner.Services;
+using WindowsServices.HW.Logging.CodeRewriting;
 using WindowsServices.HW.Utils.Props;
 using ILogger = WindowsServices.HW.Logging.ILogger;
 
@@ -11,6 +12,7 @@ namespace WindowsServices.HW.ScanService
         private readonly Scanner _scanner;
         private readonly ILogger _logger;
 
+        [LoggerAspect]
         public ScannerService(BaseProperties props)
         {
             _logger = HW.Logging.Logger.Current;
@@ -31,6 +33,7 @@ namespace WindowsServices.HW.ScanService
 
         }
 
+        [LoggerAspect]
         protected override void OnStart(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
@@ -43,6 +46,8 @@ namespace WindowsServices.HW.ScanService
                 _logger?.LogError(e);
             }
         }
+
+        [LoggerAspect]
         private void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             if (_logger != null)
@@ -53,16 +58,19 @@ namespace WindowsServices.HW.ScanService
             }
         }
 
+        [LoggerAspect]
         protected override void OnStop()
         {
             StopScanning();
         }
 
-
+        [LoggerAspect]
         public void StartScanning()
         {
             _scanner.StartScan();
         }
+
+        [LoggerAspect]
         public void StopScanning()
         {
             _scanner.StopScanning();

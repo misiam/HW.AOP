@@ -3,6 +3,7 @@ using WindowsServices.HW.ImgScanner.Interfaces;
 using MigraDoc.DocumentObjectModel;
 using System.IO;
 using WindowsServices.HW.Logging;
+using WindowsServices.HW.Logging.CodeRewriting;
 using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.Rendering;
 
@@ -13,11 +14,13 @@ namespace WindowsServices.HW.ImgScanner.Utils
     {
         private ILogger _logger;
 
+        [LoggerAspect]
         public PdfAggregatorFilesHandler()
         {
             _logger = Logger.Current;
         }
 
+        [LoggerAspect]
         public void Handle(IList<string> filesToHandle, IStorageService storageService, string path)
         {
             var document = new Document();
@@ -30,6 +33,7 @@ namespace WindowsServices.HW.ImgScanner.Utils
             PushChanges(document, storageService, path);
         }
 
+        [LoggerAspect]
         private void Handle(string inputFile, Document document)
         {
             _logger.LogInfo(" Handle: " + inputFile);
@@ -49,7 +53,7 @@ namespace WindowsServices.HW.ImgScanner.Utils
         }
 
 
-
+        [LoggerAspect]
         private void PushChanges(Document  document, IStorageService storageService, string path)
         {
             _logger.LogInfo(" PushChanges: " + path);

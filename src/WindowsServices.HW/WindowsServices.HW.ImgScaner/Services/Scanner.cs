@@ -8,6 +8,7 @@ using WindowsServices.HW.ImgScanner.Interfaces;
 using WindowsServices.HW.ImgScanner.ModelObjects;
 using WindowsServices.HW.ImgScanner.Utils;
 using WindowsServices.HW.Logging;
+using WindowsServices.HW.Logging.CodeRewriting;
 using WindowsServices.HW.Utils.Files;
 using WindowsServices.HW.Utils.Props;
 using ZXing;
@@ -28,7 +29,7 @@ namespace WindowsServices.HW.ImgScanner.Services
 
         private IStorageService _storageService;
 
-
+        [LoggerAspect]
         public Scanner(ScanProperties props )
         {
             _inputFolders = props.InputLocations;
@@ -44,7 +45,7 @@ namespace WindowsServices.HW.ImgScanner.Services
             workingThread = new Thread(Scanning);
         }
 
-
+        [LoggerAspect]
         private void Scanning()
         {
             do
@@ -86,6 +87,7 @@ namespace WindowsServices.HW.ImgScanner.Services
             while (WaitHandle.WaitAny(new WaitHandle[] { workStop, newFile } , _interval) != 0);
         }
 
+        [LoggerAspect]
         private ScanChunk ScanFiles(IEnumerable<string> files)
         {
             var scanChunk = new ScanChunk();
@@ -113,6 +115,7 @@ namespace WindowsServices.HW.ImgScanner.Services
             return scanChunk;
         }
 
+        [LoggerAspect]
         private string GetBarcodeIfExists(string file)
         {
             var reader = new BarcodeReader { AutoRotate = true };
@@ -125,6 +128,7 @@ namespace WindowsServices.HW.ImgScanner.Services
             }
         }
 
+        [LoggerAspect]
         private IEnumerable<string> GetFiles(string[] inputFolders)
         {
             const string IMG_FILE_PATTERN = "Img_*.*";
@@ -137,14 +141,16 @@ namespace WindowsServices.HW.ImgScanner.Services
                 var filesToAdd = FileSystemHelper.GetFiles(folder, IMG_FILE_PATTERN, allowedExtensions);
                 files.AddRange(filesToAdd);
             }
-            return files.OrderBy(Path.GetFileName);
+            return files.OrderBy(Path.GetFileName).ToList();
         }
-        
+
+        [LoggerAspect]
         public void StartScan()
         {
             workingThread.Start();
         }
 
+        [LoggerAspect]
         public void StopScanning()
         {
             workingThread.Abort();

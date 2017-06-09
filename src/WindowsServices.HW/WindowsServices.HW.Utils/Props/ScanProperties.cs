@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace WindowsServices.HW.Utils.Props
 {
+    [DataContract]
     public class ScanProperties : BaseProperties
     {
         public ScanProperties(string propsArgs) : base(propsArgs)

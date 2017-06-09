@@ -2,11 +2,13 @@
 using System.IO;
 using System.Linq;
 using System.Threading;
+using WindowsServices.HW.Logging.CodeRewriting;
 
 namespace WindowsServices.HW.Utils.Files
 {
     public class FileSystemHelper
     {
+        [LoggerAspect]
         public static void CreateDirectoryIfNotExists(params string[] folders)
         {
             //TODO
@@ -18,6 +20,7 @@ namespace WindowsServices.HW.Utils.Files
             }
         }
 
+        [LoggerAspect]
         public static bool TryOpen(string fullPath, int tryCount, int sleepTime = 3000)
         {
             for (var i = 0; i < tryCount; i++)
@@ -37,6 +40,7 @@ namespace WindowsServices.HW.Utils.Files
             return false;
         }
 
+        [LoggerAspect]
         public static IEnumerable<string> GetFiles(string folder, string filePattern = "*.*", string[] allowedExtensions = null)
         {
             var filesToAdd = Directory.GetFiles(folder, filePattern);
@@ -45,7 +49,7 @@ namespace WindowsServices.HW.Utils.Files
             {
                 filesToAdd = filesToAdd.Where(file => allowedExtensions.Any(file.ToLower().EndsWith)).ToArray();
             }
-            return filesToAdd.OrderBy(Path.GetFileName);
+            return filesToAdd.OrderBy(Path.GetFileName).ToList();
         }
     }
 }
