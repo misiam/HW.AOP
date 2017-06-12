@@ -37,14 +37,14 @@ namespace WindowsServices.HW.Logging.CodeRewriting
             var serializer = SerializatorBuilder.CreateSerializer(this.SerializatorType);
             logger.LogInfo($"   [PostSharp] ON SUCCESS result: { serializer.Serialize(args.ReturnValue ?? "[null]")}");
 
-            base.OnException(args);
+            base.OnSuccess(args);
             //MemoryCache.Default.Set(key, args.ReturnValue, new CacheItemPolicy());
         }
 
         public override void OnException(MethodExecutionArgs args)
         {
             var logger = Logger.CodeRewritingLogger;
-            logger.LogInfo($"   [PostSharp] ON EXCEPTION: {args.Method.Name}");
+            logger.LogError($"   [PostSharp] ON EXCEPTION: {args.Method.Name} " + args.Exception);
 
             base.OnException(args);
         }
