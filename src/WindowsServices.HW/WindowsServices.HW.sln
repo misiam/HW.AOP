@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsServices.HW.Utils", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsServices.HW.Logging.CodeRewriting", "WindowsServices.HW.Logging.CodeRewriting\WindowsServices.HW.Logging.CodeRewriting.csproj", "{B912A2DF-9809-4954-B14F-46E22F496C4F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsServices.HW.Logging.DynamicProxy", "WindowsServices.HW.Logging.DynamicProxy\WindowsServices.HW.Logging.DynamicProxy.csproj", "{2CE40ACE-C77E-47C3-AD10-E33647A85CC1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{B912A2DF-9809-4954-B14F-46E22F496C4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B912A2DF-9809-4954-B14F-46E22F496C4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B912A2DF-9809-4954-B14F-46E22F496C4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CE40ACE-C77E-47C3-AD10-E33647A85CC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CE40ACE-C77E-47C3-AD10-E33647A85CC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CE40ACE-C77E-47C3-AD10-E33647A85CC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CE40ACE-C77E-47C3-AD10-E33647A85CC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

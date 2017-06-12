@@ -1,36 +1,36 @@
 ﻿using System;
 using System.ServiceProcess;
+using WindowsServices.HW.ImgScanner.Interfaces;
 using WindowsServices.HW.ImgScanner.Services;
 using WindowsServices.HW.Logging.CodeRewriting;
 using WindowsServices.HW.Utils.Props;
+using Autofac;
+using Autofac.Core;
+using Autofac.Extras.DynamicProxy;
+using Castle.Components.DictionaryAdapter;
 using ILogger = WindowsServices.HW.Logging.ILogger;
 
 namespace WindowsServices.HW.ScanService
 {
-    public class ScannerService : ServiceBase
+    public interface IScannerService
     {
-        private readonly Scanner _scanner;
+        void StartScanning();
+        void StopScanning();
+    }
+
+    
+    public class ScannerService : ServiceBase, IScannerService
+    {
+        //private readonly IContainer _ioc;
+        private readonly IScannerWorker _scanner;
         private readonly ILogger _logger;
 
         [LoggerAspect]
-        public ScannerService(BaseProperties props)
+        public ScannerService(IContainer ioc)
         {
-            _logger = HW.Logging.Logger.Current;
-
-            var logger = HW.Logging.Logger.Current;
-            logger.LogInfo("PropsArgs:");
-            logger.LogInfo(props.PropsArgs);
-
-            foreach (var property in props.Properties)
-            {
-                logger.LogInfo(property.Key + "|" + property.Value);
-            }
-
-            logger.LogInfo("scanInterval");
-
-            var scanProperties = new ScanProperties(props);
-            _scanner = new Scanner(scanProperties);
-
+            _logger = ioc.Resolve<ILogger>();
+          
+            _scanner = ioc.Resolve<IScannerWorker>();
         }
 
         [LoggerAspect]
@@ -75,7 +75,5 @@ namespace WindowsServices.HW.ScanService
         {
             _scanner.StopScanning();
         }
-
-
     }
 }

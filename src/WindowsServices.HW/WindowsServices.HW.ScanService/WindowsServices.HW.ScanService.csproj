@@ -35,6 +35,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.6.0\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Extras.DynamicProxy, Version=4.2.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Extras.DynamicProxy.4.2.1\lib\net45\Autofac.Extras.DynamicProxy.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.4.0.0\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="CommandLine, Version=1.9.71.2, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
       <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
       <Private>True</Private>
@@ -93,6 +105,10 @@
     <ProjectReference Include="..\WindowsServices.HW.Logging.CodeRewriting\WindowsServices.HW.Logging.CodeRewriting.csproj">
       <Project>{B912A2DF-9809-4954-B14F-46E22F496C4F}</Project>
       <Name>WindowsServices.HW.Logging.CodeRewriting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowsServices.HW.Logging.DynamicProxy\WindowsServices.HW.Logging.DynamicProxy.csproj">
+      <Project>{2ce40ace-c77e-47c3-ad10-e33647a85cc1}</Project>
+      <Name>WindowsServices.HW.Logging.DynamicProxy</Name>
     </ProjectReference>
     <ProjectReference Include="..\WindowsServices.HW.Logging\WindowsServices.HW.Logging.csproj">
       <Project>{f28c5fec-a367-4a02-b178-36f39fec3f30}</Project>

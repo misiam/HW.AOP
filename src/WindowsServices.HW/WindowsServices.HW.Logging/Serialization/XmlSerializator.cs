@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Threading.Tasks;
 using WindowsServices.HW.Logging;
 
 namespace WindowsServices.HW.Utils.Serialization
@@ -25,6 +22,11 @@ namespace WindowsServices.HW.Utils.Serialization
                     using (var readerStream = new StreamReader(stream))
                     {
                         string result = readerStream.ReadToEnd();
+
+                        if (result.Length > 10000)
+                        {
+                            result = new StringBuilder().Append(result.Take(10000)) + "...";
+                        }
 
                         return result;
                     }

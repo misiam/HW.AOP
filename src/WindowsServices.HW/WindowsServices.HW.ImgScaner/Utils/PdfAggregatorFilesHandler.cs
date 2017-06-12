@@ -10,14 +10,14 @@ using MigraDoc.Rendering;
 
 namespace WindowsServices.HW.ImgScanner.Utils
 {
-    class PdfAggregatorFilesHandler : IFilesHandler
+    public class PdfAggregatorFilesHandler : IPdfAggregatorFilesHandler 
     {
         private ILogger _logger;
 
         [LoggerAspect]
-        public PdfAggregatorFilesHandler()
+        public PdfAggregatorFilesHandler(ILogger logger)
         {
-            _logger = Logger.Current;
+            _logger = logger;
         }
 
         [LoggerAspect]

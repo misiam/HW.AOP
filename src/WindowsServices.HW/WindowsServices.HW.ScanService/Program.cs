@@ -1,8 +1,18 @@
 ﻿using System;
+using WindowsServices.HW.ImgScanner.Interfaces;
+using WindowsServices.HW.ImgScanner.Services;
+using WindowsServices.HW.ImgScanner.Utils;
+using WindowsServices.HW.Logging.DynamicProxy;
+using WindowsServices.HW.Utils.Files;
+using WindowsServices.HW.Utils.Interfaces;
 using WindowsServices.HW.Utils.Props;
+using Autofac;
+using Autofac.Extras.DynamicProxy;
+using Castle.DynamicProxy;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+
 
 namespace WindowsServices.HW.ScanService
 {
@@ -19,15 +29,20 @@ namespace WindowsServices.HW.ScanService
 
             logger.SetActualLogger(logFactory.GetLogger("HW.ScanService"), logProps.UseCodeRewritingLogs);
 
+
             logger.LogInfo("Main");
             foreach (var arg in args)
             {
                 logger.LogInfo(arg);
             }
 
+            var scanProperties = new ScanProperties(props);
+            var container = GetContainer(scanProperties, logProps);
+            
+            var serv = new ScannerService(container);
+
             if (args.Length > 0 && args[0].Equals("console"))
             {
-                var serv = new ScannerService(props);
                 serv.StartScanning();
 
                 Console.ReadKey();
@@ -37,11 +52,10 @@ namespace WindowsServices.HW.ScanService
             {
                 try
                 {
-                    ScannerService.Run(new ScannerService(props));
+                    ScannerService.Run(serv);
                 }
                 catch (Exception e)
                 {
-
                     if (logger != null)
                     {
                         logger.LogError(e);
@@ -77,6 +91,29 @@ namespace WindowsServices.HW.ScanService
             var logFactory = new LogFactory(logConfig);
 
             return logFactory;
+        }
+
+        private static IContainer GetContainer(ScanProperties parameters, LogBaseProperties logBaseProperties)
+        {
+            var builder = new ContainerBuilder();
+
+            builder.Register(c => new LoggerInterceptor(logBaseProperties.UseDynamicProxyLogs)).Named<IInterceptor>("logger-interceptor");
+
+
+            builder.RegisterType<ScannerWorker>().As<IScannerWorker>().EnableInterfaceInterceptors().InterceptedBy("logger-interceptor");
+            builder.RegisterType<Scanner>().As<IScanner>().EnableInterfaceInterceptors().InterceptedBy("logger-interceptor");
+            builder.RegisterType<FileSystemHelper>().As<IFileSystemHelper>().EnableInterfaceInterceptors().InterceptedBy("logger-interceptor");
+            builder.RegisterType<PdfAggregatorFilesHandler>().As<IPdfAggregatorFilesHandler>().EnableInterfaceInterceptors().InterceptedBy("logger-interceptor");
+            builder.RegisterType<LocalFolderStorage>().As<IStorageService>().EnableInterfaceInterceptors().InterceptedBy("logger-interceptor");
+
+            builder.RegisterInstance(HW.Logging.Logger.Current).As<WindowsServices.HW.Logging.ILogger>();
+            builder.RegisterInstance(parameters).As<ScanProperties>();
+            builder.RegisterInstance(parameters.ServiceProperties).As<ServiceProperties>();
+            builder.RegisterInstance(logBaseProperties).As<LogBaseProperties>();
+
+
+            var container = builder.Build();
+            return container;
         }
     }
 }

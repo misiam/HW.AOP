@@ -24,6 +24,7 @@ namespace WindowsServices.HW.Utils.Props
         public string LogPath => Properties[PropsNames.LogPath];
 
         public bool UseCodeRewritingLogs => Properties.ContainsKey(PropsNames.CodeRewritingLogs) && Properties[PropsNames.CodeRewritingLogs] == "true";
+        public bool UseDynamicProxyLogs => Properties.ContainsKey(PropsNames.DynamicProxyLogsLogs) && Properties[PropsNames.DynamicProxyLogsLogs] == "true";
 
 
         public static string GetLogPath(string[] args, string defaultPath)

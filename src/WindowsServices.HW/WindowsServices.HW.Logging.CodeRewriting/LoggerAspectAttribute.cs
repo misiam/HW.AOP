@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PostSharp.Aspects;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters;
 using WindowsServices.HW.Utils.Serialization;
 
 namespace WindowsServices.HW.Logging.CodeRewriting
@@ -19,7 +12,7 @@ namespace WindowsServices.HW.Logging.CodeRewriting
         public override void OnEntry(MethodExecutionArgs args)
         {
             var logger = Logger.CodeRewritingLogger;
-            logger.LogInfo($"   [PostSharp] ON ENTRY: {args.Method.Name}");
+            logger.LogInfo($"   [PostSharp] ON ENTRY: {GetMethodName(args)}");
             var serializer = SerializatorBuilder.CreateSerializer(this.SerializatorType);
 
             foreach (var arg in args.Arguments)
@@ -32,7 +25,7 @@ namespace WindowsServices.HW.Logging.CodeRewriting
         public override void OnSuccess(MethodExecutionArgs args)
         {
             var logger = Logger.CodeRewritingLogger;
-            logger.LogInfo($"   [PostSharp] ON SUCCESS: {args.Method.Name}");
+            logger.LogInfo($"   [PostSharp] ON SUCCESS: {GetMethodName(args)}");
 
             var serializer = SerializatorBuilder.CreateSerializer(this.SerializatorType);
             logger.LogInfo($"   [PostSharp] ON SUCCESS result: { serializer.Serialize(args.ReturnValue ?? "[null]")}");
@@ -44,7 +37,7 @@ namespace WindowsServices.HW.Logging.CodeRewriting
         public override void OnException(MethodExecutionArgs args)
         {
             var logger = Logger.CodeRewritingLogger;
-            logger.LogError($"   [PostSharp] ON EXCEPTION: {args.Method.Name} " + args.Exception);
+            logger.LogError($"   [PostSharp] ON EXCEPTION: {GetMethodName(args)} " + args.Exception);
 
             base.OnException(args);
         }
@@ -52,8 +45,14 @@ namespace WindowsServices.HW.Logging.CodeRewriting
         public override void OnExit(MethodExecutionArgs args)
         {
             var logger = Logger.CodeRewritingLogger;
-            logger.LogInfo($"   [PostSharp] ON EXIT: {args.Method.Name}");
+            logger.LogInfo($"   [PostSharp] ON EXIT: {GetMethodName(args)}");
             base.OnExit(args);
+        }
+
+        private string GetMethodName(MethodExecutionArgs args)
+        {
+            string methodName = args.Method.DeclaringType.Name + "." + args.Method.Name;
+            return methodName;
         }
 
     }
